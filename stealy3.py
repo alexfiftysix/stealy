@@ -1,11 +1,6 @@
 # TO DO LIST:
 #
 
-
-from sys import exit
-from random import randint
-
-import stealy3_items
 import stealy3_rooms
 import stealy3_functions
 import stealy3_classes

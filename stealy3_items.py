@@ -1,86 +1,110 @@
 #######################
-## ITEMS SET UP HERE ##
+#  ITEMS SET UP HERE  #
 #######################
 
 import stealy3_classes
-from stealy3_classes import item
+from stealy3_classes import Item
 
-knife = item(
-    name = 'knife',
-    worth = 25
+knife = Item(
+    name='knife',
+    worth=25
 )
 
-mugs = item(
-    name = 'mugs',
-    worth = 5
+mugs = Item(
+    name='mugs',
+    worth=5
 )
 
-microwave = item(
+microwave = Item(
     'microwave',
     30
 )
 
-tv = item(
+tv = Item(
     'tv',
     200
 )
 
-art = item(
+art = Item(
     'art',
     300
 )
 
-console = item(
+console = Item(
     'console',
     150
 )
 
-plates = item(
+plates = Item(
     'plates',
     10
 )
 
-cutlery = item(
+cutlery = Item(
     'cutlery',
     15
 )
 
-placemats = item(
+placemats = Item(
     'placemats',
     2
 )
 
-umbrella = item(
+umbrella = Item(
     'umbrella',
     15
 )
 
-hat = item(
+hat = Item(
     'hat',
     12
 )
 
-laptop = item(
+laptop = Item(
     'laptop',
     250
 )
 
-fancy_pen = item(
+fancy_pen = Item(
     'fancy_pen',
     10
 )
 
-guitar = item(
+guitar = Item(
     'guitar',
     300
 )
 
-microphone = item(
+microphone = Item(
     'microphone',
     75
 )
 
-synth = item(
+synth = Item(
     'synth',
     125
 )
+
+
+# Attack types
+poke = stealy3_classes.Attack('Poke', 1, 20)
+stab = stealy3_classes.Attack('Stab', 1.5, 10)
+slash = stealy3_classes.Attack('Slash', 1.1, 15)
+swing = stealy3_classes.Attack('Swing', 1.7, 3)
+clobber = stealy3_classes.Attack('Clobber', 1, 20)
+thud = stealy3_classes.Attack('Thud', 2, 2)
+
+# Weapon types
+stabbing_weapon = [poke, stab]
+slashing_weapon = [slash, swing]
+blunt_weapon = [clobber, thud]
+
+# Weapons
+attack_knife = stealy3_classes.Weapon('Knife', 7, stabbing_weapon)
+sword = stealy3_classes.Weapon('Sword', 15, slashing_weapon)
+mace = stealy3_classes.Weapon('Mace', 12, blunt_weapon)
+spoon = stealy3_classes.Weapon('Spoon', 1, blunt_weapon)
+
+# Potion types
+small_potion = stealy3_classes.Potion("Small Potion", 15)
+large_potion = stealy3_classes.Potion("Large Potion", 50)

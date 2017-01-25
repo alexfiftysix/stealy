@@ -1,5 +1,6 @@
 from stealy3_classes import Room
 import stealy3_items
+import random
 
 ######################
 #  ROOM SET UP HERE  #
@@ -10,9 +11,8 @@ kitchen = Room(
     description=(
         "There is shattered glass on the ground from your forced entry."
         "\nA bench runs along the north and east walls of the room."
-        "\nThere are doors to the North, East and West."
     ),
-    xypos=[1, 0],
+    xypos=[5, 5],
     inventory=[stealy3_items.knife, stealy3_items.mugs, stealy3_items.microwave]
 )
 
@@ -20,9 +20,8 @@ lounge_room = Room(
     name='Lounge room',
     description=(
         "There is a couch on the west wall of the room."
-        "\nThere is a door to the South, one to the East, and one to the West."
         ),
-    xypos=[1, 1],
+    xypos=[],
     inventory=[stealy3_items.tv, stealy3_items.art, stealy3_items.console]
 )
 
@@ -31,18 +30,17 @@ dining_room = Room(
     description=(
         "A large table is in the centre of the room."
         "\nThe table is freshly laid with 6 places."
-        "\nDoors lead to the East and North"
         ),
-    xypos=[0, 0],
+    xypos=[],
     inventory=[stealy3_items.plates, stealy3_items.cutlery, stealy3_items.placemats]
 )
 
 foyer = Room(
     name="Foyer",
     description=(
-        "The front door is to the North, and doors lead to the South and East."
+        "The front door is to the North."
         ),
-    xypos=[0, 1],
+    xypos=[],
     inventory=[stealy3_items.umbrella, stealy3_items.hat]
 )
 
@@ -50,9 +48,8 @@ study = Room(
     name="Study",
     description=(
         "There is a desk against the corner, under a window."
-        "\nDoors lead to the West and South."
         ),
-    xypos=[2, 1],
+    xypos=[],
     inventory=[stealy3_items.laptop, stealy3_items.fancy_pen]
 )
 
@@ -60,9 +57,8 @@ music_room = Room(
     name="Music Room",
     description=(
         "The music room has a baby-grand piano, recording equipment and a chandelier."
-        "\nDoors lead to the North and West"
         ),
-    xypos=[2, 0],
+    xypos=[],
     inventory=[stealy3_items.guitar, stealy3_items.microphone, stealy3_items.synth]
 )
 
@@ -81,6 +77,6 @@ waiting_room = Room(
 escape_room = Room(
     name="Escape Room",
     description="How are you seeing this?",
-    xypos=[0, 2],
+    xypos=[],
     inventory=[]
 )

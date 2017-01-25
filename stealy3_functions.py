@@ -1,9 +1,41 @@
-from random import randint
+import random
 import stealy3_rooms
 import stealy3_items
+
+
+# Generate rooms before game begins
+def generate_room(room, room_list):
+    # picks a room, then generates a room to its N, S, E or W
+    room_chosen = False
+    while not room_chosen:
+        # can_build returns false if functions tried to build over an existing room
+        can_build = True
+        pick_base_room = random.randint(0, len(room_list)-1)
+        base_room = room_list[pick_base_room]
+        new_point = [x for x in base_room.xypos]
+        direction = random.randint(0, 3)
+        if direction == 0:
+            new_point[1] += 1
+        elif direction == 1:
+            new_point[0] += 1
+        elif direction == 2:
+            new_point[1] -= 1
+        else:
+            new_point[0] -= 1
+
+        # if room already is in new_point, return false and restart the loop
+        for i in room_list:
+            if new_point == i.xypos:
+                can_build = False
+
+        # if room can be built, set xypos and add to room_list
+        if can_build:
+            room.xypos = [x for x in new_point]
+            room_list.append(room)
+            room_chosen = True
+
+
 # Checks player inventory
-
-
 def check_player_inv(player):
 
     if len(player.inventory) < 1:
@@ -24,7 +56,7 @@ def check_player_inv(player):
 
 
 # Looks around the room the player is currently in
-def look_room(player):
+def look_room(player, room_list):
 
     print "You are in the", player.room.name + "."
     print player.room.description
@@ -45,32 +77,57 @@ def look_room(player):
                    + str(i.worth)
                    )
 
+    north_of_current = [x for x in player.room.xypos]
+    north_of_current[1] += 1
+    east_of_current = [x for x in player.room.xypos]
+    east_of_current[0] += 1
+    south_of_current = [x for x in player.room.xypos]
+    south_of_current[1] -= 1
+    west_of_current = [x for x in player.room.xypos]
+    west_of_current[0] -= 1
+
+    room_exits = []
+    for i in room_list:
+        if north_of_current == i.xypos:
+            room_exits.append("North")
+
+        if east_of_current == i.xypos:
+            room_exits.append("East")
+
+        if south_of_current == i.xypos:
+            room_exits.append("South")
+
+        if west_of_current == i.xypos:
+            room_exits.append("West")
+
+    print "Doors lead to the %s" % room_exits
+
 
 # Player moves N, E, S, or W
 # N = 0, E = 1, S = 2, W = 3
 def player_move(player, room_list, direction):
 
-    revert_pos = [x for x in player.room.xypos]
+    new_pos = [x for x in player.room.xypos]
     room_exists = False
 
     # Move North
     if direction == 0:
-        revert_pos[1] += 1
+        new_pos[1] += 1
     # Move East
     elif direction == 1:
-        revert_pos[0] += 1
+        new_pos[0] += 1
     # Move South
     elif direction == 2:
-        revert_pos[1] -= 1
+        new_pos[1] -= 1
     # Move West
     elif direction == 3:
-        revert_pos[0] -= 1
+        new_pos[0] -= 1
     else:
         print "Where are you going?"
 
     # Check if player xypos matches a room's xypos
     for i in room_list:
-        if revert_pos == i.xypos:
+        if new_pos == i.xypos:
             room_exists = True
             player.room = i
         else:
@@ -79,6 +136,7 @@ def player_move(player, room_list, direction):
     if not room_exists:
         print "You can't go there!"
 
+    # If player enters the 'escape room'
     if player.room == stealy3_rooms.escape_room:
         print "Do you want to escape?"
         print "y/n?"
@@ -138,7 +196,7 @@ def end_game(player):
 
 # Murderer moves
 def murderer_move(murderer, room_list):
-    murderer_direction = randint(0, 3)
+    murderer_direction = random.randint(0, 3)
     revert_murderer_pos = [x for x in murderer.room.xypos]
 
     if murderer_direction == 0:
@@ -288,13 +346,12 @@ def fight(player1, player2):
     print "You defeated the murderer! Steal to your heart's content."
 
 
-
-# Main function, takes player input and runs functions accordingly
-
+# Main function, takes player input and runs other functions accordingly
 def play(player, murderer, room_list):
     turns = 1
     print "Welcome to Stealy, the game of stealing!"
     print "Steal all you can, and escape unscathed!"
+    print "You are in the %s" % player.room.name
     print "type 'controls' to see the game controls"
 
     while True:
@@ -309,7 +366,12 @@ def play(player, murderer, room_list):
 
         # Player looks around room
         elif "look" in action:
-            look_room(player)
+            look_room(player, room_list)
+
+        # Player looks at map
+        elif "map" in action:
+            for i in room_list:
+                print i.name + "_" * (15-len(i.name)) + str(i.xypos)
 
         # Player steals an item
         elif "steal" in action:
@@ -348,8 +410,21 @@ def play(player, murderer, room_list):
             print "drop 'item'___________drops 'item' from inventory"
             print "move 'direction_______moves in 'direction'"
             print "wait__________________wait a turn"
+            print "escape________________escape the house"
+
+
+        # Player wants to escape house
+        elif "escape" in action:
+            answer = raw_input("Do you want to escape?\ny/n?\n> ")
+            if answer == "y":
+                end_game(player)
+
+        # action is not understood by program
         else:
             print "I don't understand."
+
+
+
 
         # Murderer becomes active after 5 turns
         if murderer.alive:
